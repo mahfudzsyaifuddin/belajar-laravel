@@ -11,11 +11,11 @@
         </span>
         <div>
             <h1 class="text-xl font-bold text-slate-900">Edit Surat Keluar</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Perbarui data surat keluar yang sudah tercatat</p>
+            <p class="text-xs text-slate-500 mt-0.5">Perbarui data, kategori, atau file lampiran surat</p>
         </div>
     </div>
 
-    <form action="{{ route('surat-keluar.update', $surat->id) }}" method="POST" class="space-y-4 max-w-xl">
+    <form action="{{ route('surat-keluar.update', $surat->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4 max-w-xl">
         @csrf
         @method('PUT')
 
@@ -51,6 +51,39 @@
             <input id="perihal" name="perihal" value="{{ old('perihal', $surat->perihal) }}"
                    class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm text-slate-900 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20">
             @error('perihal')
+                <p class="text-xs font-medium text-rose-600 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="category_id" class="block text-sm font-semibold text-slate-700 mb-1">Kategori</label>
+            <select id="category_id" name="category_id"
+                    class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm text-slate-900 bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20">
+                <option value="">-- Tanpa kategori --</option>
+                @foreach ($categories as $kategori)
+                    <option value="{{ $kategori->id }}" @selected(old('category_id', $surat->category_id ?? '') == $kategori->id)>
+                        {{ $kategori->nama }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_id')
+                <p class="text-xs font-medium text-rose-600 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="lampiran" class="block text-sm font-semibold text-slate-700 mb-1">Lampiran (PDF/JPG/PNG, maks. 2 MB)</label>
+            @if ($surat->lampiran)
+                <p class="text-xs text-slate-500 mb-1.5">
+                    Lampiran saat ini:
+                    <a href="{{ asset('storage/' . $surat->lampiran) }}" target="_blank" rel="noopener" class="text-blue-700 underline font-medium">
+                        Lihat lampiran
+                    </a>
+                </p>
+            @endif
+            <input id="lampiran" type="file" name="lampiran" accept=".pdf,.jpg,.jpeg,.png"
+                   class="w-full rounded-xl border border-slate-300 px-3 py-1.5 text-sm text-slate-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-800 hover:file:bg-amber-100">
+            @error('lampiran')
                 <p class="text-xs font-medium text-rose-600 mt-1">{{ $message }}</p>
             @enderror
         </div>

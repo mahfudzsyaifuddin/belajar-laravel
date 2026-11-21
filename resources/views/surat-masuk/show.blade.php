@@ -33,6 +33,30 @@
             <dd class="sm:col-span-2 text-slate-800 font-medium">{{ $surat->perihal }}</dd>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 px-4 py-3.5">
+            <dt class="font-semibold text-slate-500">Kategori</dt>
+            <dd class="sm:col-span-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $surat->category ? 'bg-blue-50 text-blue-800 border border-blue-200' : 'bg-slate-100 text-slate-500' }}">
+                    {{ $surat->category?->nama ?? 'Tanpa kategori' }}
+                </span>
+            </dd>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 px-4 py-3.5 bg-white">
+            <dt class="font-semibold text-slate-500">Lampiran</dt>
+            <dd class="sm:col-span-2">
+                @if ($surat->lampiran)
+                    <a href="{{ asset('storage/' . $surat->lampiran) }}" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 font-semibold underline">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                        </svg>
+                        <span>Lihat lampiran</span>
+                    </a>
+                @else
+                    <span class="text-slate-400">-</span>
+                @endif
+            </dd>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 px-4 py-3.5">
             <dt class="font-semibold text-slate-500">Keterangan</dt>
             <dd class="sm:col-span-2 text-slate-700">{{ $surat->keterangan ?? '-' }}</dd>
         </div>

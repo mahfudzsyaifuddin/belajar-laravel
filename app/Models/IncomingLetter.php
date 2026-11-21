@@ -12,5 +12,12 @@ class IncomingLetter extends Model
         'pengirim',
         'perihal',
         'keterangan',
+        'category_id',
+        'lampiran',
     ];
+
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

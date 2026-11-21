@@ -11,11 +11,11 @@
         </span>
         <div>
             <h1 class="text-xl font-bold text-slate-900">Tambah Surat Masuk</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Isi formulir berikut untuk menyimpan surat masuk baru</p>
+            <p class="text-xs text-slate-500 mt-0.5">Isi formulir, pilih kategori, dan unggah lampiran jika diperlukan</p>
         </div>
     </div>
 
-    <form action="{{ route('surat-masuk.store') }}" method="POST" class="space-y-4 max-w-xl">
+    <form action="{{ route('surat-masuk.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 max-w-xl">
         @csrf
 
         <div>
@@ -50,6 +50,31 @@
             <input id="perihal" name="perihal" value="{{ old('perihal') }}"
                    class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20">
             @error('perihal')
+                <p class="text-xs font-medium text-rose-600 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="category_id" class="block text-sm font-semibold text-slate-700 mb-1">Kategori</label>
+            <select id="category_id" name="category_id"
+                    class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm text-slate-900 bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20">
+                <option value="">-- Tanpa kategori --</option>
+                @foreach ($categories as $kategori)
+                    <option value="{{ $kategori->id }}" @selected(old('category_id', $surat->category_id ?? '') == $kategori->id)>
+                        {{ $kategori->nama }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_id')
+                <p class="text-xs font-medium text-rose-600 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="lampiran" class="block text-sm font-semibold text-slate-700 mb-1">Lampiran (PDF/JPG/PNG, maks. 2 MB)</label>
+            <input id="lampiran" type="file" name="lampiran" accept=".pdf,.jpg,.jpeg,.png"
+                   class="w-full rounded-xl border border-slate-300 px-3 py-1.5 text-sm text-slate-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            @error('lampiran')
                 <p class="text-xs font-medium text-rose-600 mt-1">{{ $message }}</p>
             @enderror
         </div>
