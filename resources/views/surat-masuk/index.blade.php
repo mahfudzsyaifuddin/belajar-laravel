@@ -7,7 +7,7 @@
     <table border="1" cellpadding="8">
         <thead>
             <tr>
-                <th>No.</th>
+                <th>No</th>
                 <th>Nomor Surat</th>
                 <th>Tanggal</th>
                 <th>Pengirim</th>
@@ -16,16 +16,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($suratMasuk as $surat)
+            @forelse ($suratMasuk as $surat)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $surat['nomor_surat'] }}</td>
-                    <td>{{ $surat['tanggal'] }}</td>
-                    <td>{{ $surat['pengirim'] }}</td>
-                    <td>{{ $surat['perihal'] }}</td>
-                    <td><a href="{{ route('surat-masuk.show', $surat['id']) }}">Detail</a></td>
+                    <td>{{ $surat->nomor_surat }}</td>
+                    <td>{{ $surat->tanggal }}</td>
+                    <td>{{ $surat->pengirim }}</td>
+                    <td>{{ $surat->perihal }}</td>
+                    <td><a href="{{ route('surat-masuk.show', $surat->id) }}">Detail</a></td>
                 </tr>
-            @endforeach
+            @empty
+                <tr><td colspan="6">Belum ada surat masuk.</td></tr>
+            @endforelse
         </tbody>
     </table>
 @endsection
